@@ -39,7 +39,14 @@ const productSchema = new Schema<Product>({
   category: {
     type: String,
     enum: {
-      values: ['Electronics , Fitness , Footwear , Kitchen , Wearable , Audio'],
+      values: [
+        'Electronics',
+        'Fitness',
+        'Footwear',
+        'Kitchen',
+        'Wearable',
+        'Audio',
+      ],
     },
   },
   tags: {

@@ -31,10 +31,20 @@ const deleteSingleProductFromDB = async (id: string) => {
   return result;
 };
 
+const searchItemFromDB = async (searchKeyword: string) => {
+  const result = await ProductModel.find({
+    $match: {
+      $or: [{ name: searchKeyword }],
+    },
+  });
+  return result;
+};
+
 export const ProductService = {
   createNewProductInDB,
   getAllProductsFromDB,
   getSingleProductFromDB,
   updateSingleProductFromDB,
   deleteSingleProductFromDB,
+  searchItemFromDB,
 };

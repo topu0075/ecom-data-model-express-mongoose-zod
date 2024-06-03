@@ -107,6 +107,18 @@ const deleteSingleProduct = async (req: Request, res: Response) => {
     });
   }
 };
+const searchProducts = async (req: Request, res: Response) => {
+  try {
+    const temp = req.query;
+    console.log('🚀 ~ searchProducts ~ temp:', temp);
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: 'Internal Server Error',
+      error,
+    });
+  }
+};
 
 export const ProductController = {
   createProduct,
@@ -114,4 +126,5 @@ export const ProductController = {
   getSingleProducts,
   updateSingleProducts,
   deleteSingleProduct,
+  searchProducts,
 };

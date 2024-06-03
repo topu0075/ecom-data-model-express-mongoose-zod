@@ -79,7 +79,25 @@ const updateSingleProducts = async (req: Request, res: Response) => {
     res.status(200).json({
       success: true,
       message: 'Product is updated successfully',
-      data: productData,
+      data: result,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: 'Internal Server Error',
+      error,
+    });
+  }
+};
+
+const deleteSingleProduct = async (req: Request, res: Response) => {
+  try {
+    const { productId } = req.params;
+    const result = ProductService.deleteSingleProductFromDB(productId);
+    res.status(200).json({
+      success: true,
+      message: 'Product Deleted successfully',
+      data: result,
     });
   } catch (error) {
     res.status(500).json({
@@ -95,4 +113,5 @@ export const ProductController = {
   getAllProducts,
   getSingleProducts,
   updateSingleProducts,
+  deleteSingleProduct,
 };

@@ -107,6 +107,7 @@ const deleteSingleProduct = async (req: Request, res: Response) => {
     });
   }
 };
+
 const searchProducts = async (req: Request, res: Response) => {
   try {
     const temp = req.query;

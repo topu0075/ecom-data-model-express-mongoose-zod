@@ -6,6 +6,19 @@ const createOrderInDB = async (orderData: Order) => {
   return result;
 };
 
+const getOrdersFromDB = async () => {
+  const result = await OrderModel.find();
+  return result;
+};
+
+const getOrdersByUserEmailFromDB = async (email: string) => {
+  const result = await OrderModel.find({
+    email: email,
+  });
+  return result;
+};
 export const OrderService = {
   createOrderInDB,
+  getOrdersFromDB,
+  getOrdersByUserEmailFromDB,
 };

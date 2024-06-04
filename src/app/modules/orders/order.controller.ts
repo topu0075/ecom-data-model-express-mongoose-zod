@@ -12,7 +12,7 @@ const createOrder = async (req: Request, res: Response) => {
     console.log('🚀 ~ createOrder ~ result:', result);
     res.status(200).json({
       success: true,
-      message: 'Order added successfully',
+      message: 'Order created successfully!',
       data: orderData,
     });
   } catch (error) {
@@ -24,6 +24,23 @@ const createOrder = async (req: Request, res: Response) => {
   }
 };
 
+const getAllOrders = async (req: Request, res: Response) => {
+  const { email } = req.query;
+  let result;
+  if (email) {
+    result = await OrderService.getOrdersByUserEmailFromDB(email as string);
+  } else {
+    result = await OrderService.getOrdersFromDB();
+  }
+
+  res.status(200).json({
+    success: true,
+    message: 'Orders fetched successfully!',
+    data: result,
+  });
+};
+
 export const OrderController = {
   createOrder,
+  getAllOrders,
 };

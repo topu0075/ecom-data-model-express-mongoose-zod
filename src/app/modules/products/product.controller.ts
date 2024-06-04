@@ -27,7 +27,17 @@ const createProduct = async (req: Request, res: Response) => {
 };
 
 //GET all products
-const getAllProducts = async (req: Request, res: Response) => {
+
+const getProducts = async (req: Request, res: Response) => {
+  const { searchTerm } = req.query;
+  if (searchTerm) {
+    getProductsBySearchTerm(searchTerm as string, res);
+  } else {
+    getAllProducts(res);
+  }
+};
+
+const getAllProducts = async (res: Response) => {
   try {
     const result = await ProductService.getAllProductsFromDB();
     res.status(200).json({
@@ -39,6 +49,27 @@ const getAllProducts = async (req: Request, res: Response) => {
     res.status(500).json({
       success: false,
       message: 'Internal Server Error',
+      error,
+    });
+  }
+};
+
+const getProductsBySearchTerm = async (searchTerm: string, res: Response) => {
+  try {
+    const result = await ProductService.searchItemFromDB(searchTerm as string);
+    if (result.length <= 0) {
+      throw new Error(`No products found matching search term ${searchTerm}!!`);
+    }
+    res.status(200).json({
+      success: true,
+      message: `Products matching search term ${searchTerm} fetched successfully!`,
+      data: result,
+    });
+  } catch (error: any) {
+    console.log();
+    res.status(500).json({
+      success: false,
+      message: error.message,
       error,
     });
   }
@@ -108,24 +139,23 @@ const deleteSingleProduct = async (req: Request, res: Response) => {
   }
 };
 
-const searchProducts = async (req: Request, res: Response) => {
-  try {
-    const temp = req.query;
-    console.log('🚀 ~ searchProducts ~ temp:', temp);
-  } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: 'Internal Server Error',
-      error,
-    });
-  }
-};
+// const searchProducts = async (req: Request, res: Response) => {
+//   try {
+//     const temp = req.query;
+//     console.log('🚀 ~ searchProducts ~ temp:', temp);
+//   } catch (error) {
+//     res.status(500).json({
+//       success: false,
+//       message: 'Internal Server Error',
+//       error,
+//     });
+//   }
+// };
 
 export const ProductController = {
   createProduct,
-  getAllProducts,
+  getProducts,
   getSingleProducts,
   updateSingleProducts,
   deleteSingleProduct,
-  searchProducts,
 };

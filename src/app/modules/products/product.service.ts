@@ -44,6 +44,19 @@ const searchItemFromDB = async (searchKeyword: string) => {
   return result;
 };
 
+const updateStockInDB = async (productId: string) => {
+  const result = await ProductModel.findOneAndUpdate(
+    { _id: productId },
+    {
+      inventory: { inStock: false },
+    },
+    {
+      upsert: true,
+    },
+  );
+  console.log('🚀 ~ updateStockInDB ~ result:', result);
+};
+
 export const ProductService = {
   createNewProductInDB,
   getAllProductsFromDB,
@@ -51,4 +64,5 @@ export const ProductService = {
   updateSingleProductFromDB,
   deleteSingleProductFromDB,
   searchItemFromDB,
+  updateStockInDB,
 };

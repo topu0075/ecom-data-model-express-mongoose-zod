@@ -152,6 +152,14 @@ const deleteSingleProduct = async (req: Request, res: Response) => {
 //   }
 // };
 
+// const updateStock = async(req:Request, res:Response)=>{
+//   try {
+//     const result = ProductService.updateStockInDB(req.)
+//   } catch (error) {
+    
+//   }
+// }
+
 export const ProductController = {
   createProduct,
   getProducts,

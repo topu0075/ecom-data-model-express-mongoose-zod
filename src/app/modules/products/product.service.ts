@@ -44,17 +44,16 @@ const searchItemFromDB = async (searchKeyword: string) => {
   return result;
 };
 
+const inventoryCheck = async (productId: string, quantity: number) => {
+  const result = await ProductModel.findOne({ _id: productId });
+
+  return result && result?.inventory.quantity >= quantity ? true : false;
+};
 const updateStockInDB = async (productId: string) => {
-  const result = await ProductModel.findOneAndUpdate(
-    { _id: productId },
-    {
-      inventory: { inStock: false },
-    },
-    {
-      upsert: true,
-    },
-  );
-  console.log('🚀 ~ updateStockInDB ~ result:', result);
+  const result = await ProductModel.findOne({ _id: productId });
+
+  console.log('🚀 ~ updateStockInDB ~ result:', result?.inventory.inStock);
+  console.log('🚀 ~ updateStockInDB ~ result:', result?.inventory.quantity);
 };
 
 export const ProductService = {
@@ -65,4 +64,5 @@ export const ProductService = {
   deleteSingleProductFromDB,
   searchItemFromDB,
   updateStockInDB,
+  inventoryCheck,
 };

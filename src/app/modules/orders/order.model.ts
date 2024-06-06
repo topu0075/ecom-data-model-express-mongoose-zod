@@ -22,6 +22,13 @@ const orderSchema = new Schema<Order>({
 });
 
 orderSchema.pre('save', async function (next) {
+  const testing = await ProductService.inventoryCheck(
+    this.productId,
+    this.quantity,
+  );
+  if (!testing) {
+    throw new Error('Quantity exceed stock amount');
+  }
   next();
 });
 

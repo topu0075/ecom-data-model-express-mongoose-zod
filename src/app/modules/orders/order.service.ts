@@ -1,4 +1,3 @@
-import { ProductModel } from '../products/product.model';
 import { Order } from './order.interface';
 import { OrderModel } from './order.model';
 
@@ -16,6 +15,9 @@ const getOrdersByUserEmailFromDB = async (email: string) => {
   const result = await OrderModel.find({
     email: email,
   });
+  if (result.length == 0) {
+    throw new Error('Order not found');
+  }
   return result;
 };
 export const OrderService = {

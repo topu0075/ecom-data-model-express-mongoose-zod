@@ -13,8 +13,6 @@ const getAllProductsFromDB = async () => {
 
 const getSingleProductFromDB = async (id: string) => {
   const result = await ProductModel.findOne({ _id: id });
-  console.log('🚀 ~ getSingleProductFromDB ~ result:', result);
-  console.log('🚀 ~ getSingleProductFromDB ~ id:', id);
   return result;
 };
 
@@ -46,9 +44,9 @@ const searchItemFromDB = async (searchKeyword: string) => {
 
 const inventoryCheck = async (productId: string, quantity: number) => {
   const result = await ProductModel.findOne({ _id: productId });
-
   return result && result?.inventory.quantity >= quantity ? true : false;
 };
+
 const updateStockInDB = async (productId: string, quantity: number) => {
   const result = await ProductModel.findOne({ _id: productId });
   if (result) {
@@ -60,8 +58,6 @@ const updateStockInDB = async (productId: string, quantity: number) => {
     }
     updateSingleProductFromDB(productId, result);
   }
-
-  console.log('🚀 ~ updateStockInDB ~ result:', result);
 };
 
 export const ProductService = {

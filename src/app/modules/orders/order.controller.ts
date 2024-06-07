@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import { OrderService } from './order.service';
 import orderSchema from './order.validation';
 
+//Create order
 const createOrder = async (req: Request, res: Response) => {
   try {
     const orderData = req.body;
@@ -26,6 +27,7 @@ const createOrder = async (req: Request, res: Response) => {
   }
 };
 
+//Get all orders
 const getAllOrders = async (req: Request, res: Response) => {
   const { email } = req.query;
   try {

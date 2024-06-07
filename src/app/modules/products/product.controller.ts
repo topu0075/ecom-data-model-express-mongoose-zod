@@ -2,6 +2,8 @@ import { Request, Response } from 'express';
 import { ProductService } from './product.service';
 import productSchemaValidation from './product.validation';
 
+//Create new products
+
 const createProduct = async (req: Request, res: Response) => {
   try {
     const productData = req.body;
@@ -9,8 +11,6 @@ const createProduct = async (req: Request, res: Response) => {
     productData.inventory.quantity = Number(productData.inventory.quantity);
     const validatedData = productSchemaValidation.parse(productData);
     const result = await ProductService.createNewProductInDB(validatedData);
-    console.log('🚀 ~ createProduct ~ result:', result);
-
     res.status(200).json({
       success: true,
       message: 'Product is created successfully',
@@ -21,12 +21,11 @@ const createProduct = async (req: Request, res: Response) => {
     res.status(400).json({
       success: false,
       message: 'Products not created successfully',
-      error,
     });
   }
 };
 
-//GET all products
+//Products search controller
 
 const getProducts = async (req: Request, res: Response) => {
   const { searchTerm } = req.query;
@@ -36,6 +35,8 @@ const getProducts = async (req: Request, res: Response) => {
     getAllProducts(res);
   }
 };
+
+//Get All the product
 
 const getAllProducts = async (res: Response) => {
   try {
@@ -53,6 +54,8 @@ const getAllProducts = async (res: Response) => {
     });
   }
 };
+
+//Get product by search term
 
 const getProductsBySearchTerm = async (searchTerm: string, res: Response) => {
   try {
@@ -75,6 +78,8 @@ const getProductsBySearchTerm = async (searchTerm: string, res: Response) => {
   }
 };
 
+//Get products by product ID
+
 const getSingleProducts = async (req: Request, res: Response) => {
   try {
     const { productId } = req.params;
@@ -88,11 +93,12 @@ const getSingleProducts = async (req: Request, res: Response) => {
   } catch (error) {
     res.status(500).json({
       success: false,
-      message: 'Internal Server Error',
-      error,
+      message: 'Product not found.',
     });
   }
 };
+
+//Update Products info
 
 const updateSingleProducts = async (req: Request, res: Response) => {
   try {
@@ -121,6 +127,8 @@ const updateSingleProducts = async (req: Request, res: Response) => {
   }
 };
 
+//Delete Product info
+
 const deleteSingleProduct = async (req: Request, res: Response) => {
   try {
     const { productId } = req.params;
@@ -138,27 +146,6 @@ const deleteSingleProduct = async (req: Request, res: Response) => {
     });
   }
 };
-
-// const searchProducts = async (req: Request, res: Response) => {
-//   try {
-//     const temp = req.query;
-//     console.log('🚀 ~ searchProducts ~ temp:', temp);
-//   } catch (error) {
-//     res.status(500).json({
-//       success: false,
-//       message: 'Internal Server Error',
-//       error,
-//     });
-//   }
-// };
-
-// const updateStock = async(req:Request, res:Response)=>{
-//   try {
-//     const result = ProductService.updateStockInDB(req.)
-//   } catch (error) {
-    
-//   }
-// }
 
 export const ProductController = {
   createProduct,

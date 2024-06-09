@@ -19,7 +19,8 @@ const createProduct = async (req: Request, res: Response) => {
   } catch (error) {
     res.status(400).json({
       success: false,
-      message: 'Products not created successfully',
+      message: `Products not created successfully`,
+      error,
     });
   }
 };

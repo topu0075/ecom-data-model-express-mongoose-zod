@@ -40,18 +40,19 @@ const getProducts = async (req: Request, res: Response) => {
 const getAllProducts = async (res: Response) => {
   try {
     const result = await ProductService.getAllProductsFromDB();
+    let message = 'Products fetched successfully!';
     if (result.length == 0) {
-      throw new Error();
+      message = 'No Products found';
     }
     res.status(200).json({
       success: true,
-      message: 'Products fetched successfully!',
+      message: message,
       data: result,
     });
   } catch (error) {
     res.status(500).json({
       success: false,
-      message: 'No Products found',
+      message: 'Internal Server Error. Could not fetch Products info',
     });
   }
 };
@@ -85,17 +86,13 @@ const getSingleProducts = async (req: Request, res: Response) => {
   try {
     const { productId } = req.params;
     const result = await ProductService.getSingleProductFromDB(productId);
-    if (result === null) {
-      throw new Error();
-    }
-    // console.log('🚀 ~ getSingleProducts ~ productId:', productId);
     res.status(200).json({
       success: true,
       message: 'Products fetched successfully!',
       data: result,
     });
   } catch (error) {
-    res.status(400).json({
+    res.status(500).json({
       success: false,
       message: 'No Product found under this product Id.',
     });

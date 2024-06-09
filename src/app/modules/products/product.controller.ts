@@ -108,14 +108,11 @@ const updateSingleProducts = async (req: Request, res: Response) => {
     productData.price = Number(productData.price);
     productData.inventory.quantity = Number(productData.inventory.quantity);
     const validatedData = productSchemaValidation.parse(productData);
-    const result = await ProductService.updateSingleProductFromDB(
-      productId,
-      validatedData,
-    );
+    await ProductService.updateSingleProductFromDB(productId, validatedData);
     res.status(200).json({
       success: true,
       message: 'Product is updated successfully',
-      data: result,
+      data: productData,
     });
   } catch (error) {
     res.status(400).json({

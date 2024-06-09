@@ -8,6 +8,9 @@ const createOrderInDB = async (orderData: Order) => {
 
 const getOrdersFromDB = async () => {
   const result = await OrderModel.find();
+  if (result.length == 0) {
+    throw new Error('No Order found');
+  }
   return result;
 };
 
@@ -16,7 +19,7 @@ const getOrdersByUserEmailFromDB = async (email: string) => {
     email: email,
   });
   if (result.length == 0) {
-    throw new Error('Order not found');
+    throw new Error('No Order found for this email ');
   }
   return result;
 };

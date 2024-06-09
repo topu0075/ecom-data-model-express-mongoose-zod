@@ -14,10 +14,9 @@ const createProduct = async (req: Request, res: Response) => {
     res.status(200).json({
       success: true,
       message: 'Product is created successfully',
-      data: productData,
+      data: result,
     });
   } catch (error) {
-    console.log(error);
     res.status(400).json({
       success: false,
       message: 'Products not created successfully',
@@ -41,6 +40,9 @@ const getProducts = async (req: Request, res: Response) => {
 const getAllProducts = async (res: Response) => {
   try {
     const result = await ProductService.getAllProductsFromDB();
+    if (result.length == 0) {
+      throw new Error();
+    }
     res.status(200).json({
       success: true,
       message: 'Products fetched successfully!',
@@ -49,8 +51,7 @@ const getAllProducts = async (res: Response) => {
   } catch (error) {
     res.status(500).json({
       success: false,
-      message: 'Internal Server Error',
-      error,
+      message: 'No Products found',
     });
   }
 };
@@ -68,13 +69,13 @@ const getProductsBySearchTerm = async (searchTerm: string, res: Response) => {
       message: `Products matching search term ${searchTerm} fetched successfully!`,
       data: result,
     });
-  } catch (error: any) {
-    console.log();
-    res.status(500).json({
-      success: false,
-      message: error.message,
-      error,
-    });
+  } catch (error) {
+    if (error instanceof Error) {
+      res.status(400).json({
+        success: false,
+        message: error.message,
+      });
+    }
   }
 };
 
@@ -84,16 +85,19 @@ const getSingleProducts = async (req: Request, res: Response) => {
   try {
     const { productId } = req.params;
     const result = await ProductService.getSingleProductFromDB(productId);
-    console.log('🚀 ~ getSingleProducts ~ productId:', productId);
+    if (result === null) {
+      throw new Error();
+    }
+    // console.log('🚀 ~ getSingleProducts ~ productId:', productId);
     res.status(200).json({
       success: true,
       message: 'Products fetched successfully!',
       data: result,
     });
   } catch (error) {
-    res.status(500).json({
+    res.status(400).json({
       success: false,
-      message: 'Product not found.',
+      message: 'No Product found under this product Id.',
     });
   }
 };
@@ -111,18 +115,15 @@ const updateSingleProducts = async (req: Request, res: Response) => {
       productId,
       validatedData,
     );
-    console.log('🚀 ~ createProduct ~ result:', result);
-
     res.status(200).json({
       success: true,
       message: 'Product is updated successfully',
       data: result,
     });
   } catch (error) {
-    res.status(500).json({
+    res.status(400).json({
       success: false,
-      message: 'Internal Server Error',
-      error,
+      message: 'Internal Server Error. Could not update the product info',
     });
   }
 };
@@ -141,8 +142,7 @@ const deleteSingleProduct = async (req: Request, res: Response) => {
   } catch (error) {
     res.status(500).json({
       success: false,
-      message: 'Internal Server Error',
-      error,
+      message: 'Product deleted unsuccessfully',
     });
   }
 };

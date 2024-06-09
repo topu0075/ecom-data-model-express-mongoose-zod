@@ -11,19 +11,18 @@ const createOrder = async (req: Request, res: Response) => {
     const orderValidatedInfo = orderSchema.parse(orderData);
     const result = await OrderService.createOrderInDB(orderValidatedInfo);
 
-    console.log('🚀 ~ createOrder ~ result:', result);
     res.status(200).json({
       success: true,
       message: 'Order created successfully!',
-      data: orderData,
+      data: result,
     });
-  } catch (error: any) {
-    console.log(error.message);
-    res.status(400).json({
-      success: false,
-      message: 'Order not added successfully',
-      error: error.message,
-    });
+  } catch (error) {
+    if (error instanceof Error) {
+      res.status(400).json({
+        success: false,
+        message: error.message,
+      });
+    }
   }
 };
 
@@ -34,21 +33,24 @@ const getAllOrders = async (req: Request, res: Response) => {
     let result;
     if (email) {
       result = await OrderService.getOrdersByUserEmailFromDB(email as string);
-      console.log('🚀 ~ getAllOrders ~ result:', result);
     } else {
       result = await OrderService.getOrdersFromDB();
-      console.log('🚀 ~ getAllOrders ~ result:', result);
     }
-
     res.status(200).json({
       success: true,
       message: 'Orders fetched successfully!',
       data: result,
     });
-  } catch (error: any) {
-    res.status(200).json({
-      success: true,
-      message: error.message,
+  } catch (error) {
+    let message;
+    if (error instanceof Error) {
+      message = error.message;
+    } else {
+      message = 'Order not found';
+    }
+    res.status(400).json({
+      success: false,
+      message: message,
     });
   }
 };

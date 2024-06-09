@@ -1,5 +1,4 @@
-const { z } = require('zod');
-
+import { z } from 'zod';
 const orderSchema = z.object({
   email: z.string().email().min(1, { message: 'Email is required' }),
   productId: z.string().min(1, { message: 'Product ID can not be empty' }),

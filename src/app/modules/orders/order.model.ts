@@ -22,22 +22,19 @@ const orderSchema = new Schema<Order>({
 });
 
 orderSchema.pre('save', async function (next) {
-  const testing = await ProductService.inventoryCheck(
+  const inventoryCheck = await ProductService.inventoryCheck(
     this.productId,
     this.quantity,
   );
-  if (!testing) {
+  if (!inventoryCheck) {
     throw new Error('Insufficient quantity available in inventory');
   }
   next();
 });
 
 orderSchema.post('save', async function (doc, next) {
-  const test = await ProductService.updateStockInDB(
-    doc.productId,
-    doc.quantity,
-  );
-  console.log('🚀 ~ orderSchema.pre ~ test:', test);
+  await ProductService.updateStockInDB(doc.productId, doc.quantity);
+  // console.log('🚀 ~ orderSchema.pre ~ test:', test);
   next();
 });
 

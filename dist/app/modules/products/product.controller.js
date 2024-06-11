@@ -32,7 +32,8 @@ const createProduct = (req, res) => __awaiter(void 0, void 0, void 0, function* 
     catch (error) {
         res.status(400).json({
             success: false,
-            message: 'Products not created successfully',
+            message: `Products not created successfully`,
+            error,
         });
     }
 });
@@ -115,11 +116,11 @@ const updateSingleProducts = (req, res) => __awaiter(void 0, void 0, void 0, fun
         productData.price = Number(productData.price);
         productData.inventory.quantity = Number(productData.inventory.quantity);
         const validatedData = product_validation_1.default.parse(productData);
-        const result = yield product_service_1.ProductService.updateSingleProductFromDB(productId, validatedData);
+        yield product_service_1.ProductService.updateSingleProductFromDB(productId, validatedData);
         res.status(200).json({
             success: true,
             message: 'Product is updated successfully',
-            data: result,
+            data: productData,
         });
     }
     catch (error) {

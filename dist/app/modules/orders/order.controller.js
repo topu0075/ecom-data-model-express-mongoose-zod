@@ -30,10 +30,12 @@ const createOrder = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         });
     }
     catch (error) {
+        console.log(error);
         if (error instanceof Error) {
             res.status(400).json({
                 success: false,
                 message: error.message,
+                error,
             });
         }
     }

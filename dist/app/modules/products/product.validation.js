@@ -19,14 +19,7 @@ const productSchemaValidation = zod_1.z.object({
     name: zod_1.z.string().min(1, { message: 'Name is required' }),
     description: zod_1.z.string().min(1, { message: 'Description is required' }),
     price: zod_1.z.number().positive({ message: 'Price must be a positive number' }),
-    category: zod_1.z.enum([
-        'Electronics',
-        'Fitness',
-        'Footwear',
-        'Kitchen',
-        'Wearable',
-        'Audio',
-    ]),
+    category: zod_1.z.string().min(1, { message: 'Category is required' }),
     tags: zod_1.z
         .array(zod_1.z.string().min(1, { message: 'Tag cannot be empty' }))
         .min(1, { message: 'At least one tag is required' }),

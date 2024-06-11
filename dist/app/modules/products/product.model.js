@@ -37,14 +37,6 @@ const productSchema = new mongoose_1.Schema({
     },
     category: {
         type: String,
-        enum: [
-            'Electronics',
-            'Fitness',
-            'Footwear',
-            'Kitchen',
-            'Wearable',
-            'Audio',
-        ],
         required: true,
     },
     tags: {

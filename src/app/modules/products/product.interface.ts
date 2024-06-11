@@ -11,14 +11,7 @@ export type Product = {
   name: string;
   description: string;
   price: number;
-  category:
-    | 'Electronics'
-    | 'Fitness'
-    | 'Footwear'
-    | 'Kitchen'
-    | 'Wearable'
-    | 'Kitchen'
-    | 'Audio';
+  category: string;
   tags: string[];
   variants: Variants[];
   inventory: Inventory;
